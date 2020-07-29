@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Cargo extends Model
 {
@@ -43,8 +44,6 @@ class Cargo extends Model
 		'size_h',
 		'weight_max',
 		'capacity',
-		'license',
-		'adr',
 		'quantity_transport',
 		'price_show',
 		'payment_type',
@@ -52,20 +51,140 @@ class Cargo extends Model
 		'nds',
 		'currency',
 		'per_type',
-		'options',
 		'prepay',
 		'payment_time',
 		'notice',
 		'created_at', 
 		'refresh_at'
     ];
-
-    public function getCargo($user_id)
+    /**
+     * Получить все заявки грузов пользователя , АКТИВНЫХ или АРХИВНЫХ
+     * @param  $user_id ,$active = 0/1 активна или нет
+     * @return [array] 
+     */
+    public function getAllCargoUser($user_id,$active)
     {
-        return DB::table('cargo_request')
-            ->select('cargo_request.*')
-            ->where('cargo_request.user_id','=' , $user_id)
+
+        $requests = DB::table('cargo_request')
+            ->leftJoin('transport_body_type', 'transport_body_type.id', '=', 'cargo_request.body_type')
+            ->leftJoin('cargo_type', 'cargo_type.id', '=', 'cargo_request.cargo_type')
+            ->select('cargo_request.*','transport_body_type.name as transport_body_type','cargo_type.name as cargo_type_name')
+            ->where([
+                ['cargo_request.user_id', '=', $user_id],
+                ['active', '=', $active],
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get()->toArray();
+
+        foreach ($requests as $key => $request) {
+            $id[]=$request->id;
+        }
+
+		/*
+        Точки погрузки
+         */ 
+        foreach ($requests as $key => $request) {
+         	$data =  DB::table('cargo_waypoints_source')
+         	->leftJoin('_countries', '_countries.country_id', '=', 'cargo_waypoints_source.country')
+         	->leftJoin('_regions', '_regions.region_id', '=', 'cargo_waypoints_source.region')
+         	->leftJoin('_cities', '_cities.city_id', '=', 'cargo_waypoints_source.city')
+            ->select('cargo_waypoints_source.request_id as request_id','_countries.title_ru as country','_regions.title_ru as region','_cities.title_ru as city')
+            ->whereIn ('cargo_waypoints_source.request_id' , $id)
+            ->get()->toArray();
+       
+            $requests[$key]->waypoints_source = json_decode(json_encode($data), true);
+        } 
+        /*
+        Точки выгрузки
+         */
+        foreach ($requests as $key => $request) {
+         	$data = DB::table('cargo_waypoints_target')
+         	->leftJoin('_countries', '_countries.country_id', '=', 'cargo_waypoints_target.country')
+         	->leftJoin('_regions', '_regions.region_id', '=', 'cargo_waypoints_target.region')
+         	->leftJoin('_cities', '_cities.city_id', '=', 'cargo_waypoints_target.city')
+            ->select('cargo_waypoints_target.request_id as request_id ','_countries.title_ru as country','_regions.title_ru as region','_cities.title_ru as city')
+            ->whereIn ('cargo_waypoints_target.request_id' , $id)
+            ->get()->toArray();
+            $requests[$key]->waypoints_target = json_decode(json_encode($data), true);
+        } 
+        /*
+        Опции по заявке
+         */
+        foreach ($requests as $key => $request) {
+         	$requests[$key]->options = DB::table('options_cargo')
+         	->leftJoin('options_description', 'options_description.id', '=', 'options_cargo.option_id')
+            ->select('options_description.name','options_cargo.value','options_description.type')
+            ->whereIn ('options_cargo.cargo_request_id' , $id)
+            ->get();
+
+        } 
+        return $requests;  
+    }
+    /**
+     * Получить заявку пользователя по id
+     * @param  [type] $user_id          [description]
+     * @param  [type] $cargo_request_id [description]
+     * @return mixed object
+     */
+    public function getCargoById($user_id,$cargo_request_id)
+    {
+        $requests = DB::table('cargo_request')
+            ->leftJoin('transport_body_type', 'transport_body_type.id', '=', 'cargo_request.body_type')
+            ->leftJoin('cargo_type', 'cargo_type.id', '=', 'cargo_request.cargo_type')
+            ->select('cargo_request.*','transport_body_type.name as transport_body_type','cargo_type.name as cargo_type_name')
+            ->where([
+                ['cargo_request.user_id', '=', $user_id],
+                ['active', '=', 1],
+                ['cargo_request.id', '=', $cargo_request_id],
+            ])
             ->first();
+        /*
+        Точки погрузки
+         */ 
+        $requests->waypoints_source =  DB::table('cargo_waypoints_source')
+        ->leftJoin('_countries', '_countries.country_id', '=', 'cargo_waypoints_source.country')
+        ->leftJoin('_regions', '_regions.region_id', '=', 'cargo_waypoints_source.region')
+        ->leftJoin('_cities', '_cities.city_id', '=', 'cargo_waypoints_source.city')
+        ->select(
+            'cargo_waypoints_source.request_id as request_id',
+            '_countries.title_ru as country',
+            '_regions.title_ru as region',
+            '_cities.title_ru as city',
+            '_countries.country_id',
+            '_regions.region_id',
+            '_cities.city_id',
+        )
+        ->where('cargo_waypoints_source.request_id','=' , $requests->id)
+        ->get()->toArray();
+
+        /*
+        Точки выгрузки
+         */
+        $requests->waypoints_target = DB::table('cargo_waypoints_target')
+        ->leftJoin('_countries', '_countries.country_id', '=', 'cargo_waypoints_target.country')
+        ->leftJoin('_regions', '_regions.region_id', '=', 'cargo_waypoints_target.region')
+        ->leftJoin('_cities', '_cities.city_id', '=', 'cargo_waypoints_target.city')
+        ->select(
+            'cargo_waypoints_target.request_id as request_id ',
+            '_countries.title_ru as country',
+            '_countries.country_id',
+            '_regions.title_ru as region',
+            '_regions.region_id',
+            '_cities.title_ru as city',
+            '_cities.city_id',
+        )
+        ->where('cargo_waypoints_target.request_id','=' , $requests->id)
+        ->get()->toArray();
+        /*
+        Опции по заявке
+         */
+        $requests->options = DB::table('options_cargo')
+        ->leftJoin('options_description', 'options_description.id', '=', 'options_cargo.option_id')
+        ->select('options_description.name','options_description.id','options_cargo.value','options_description.type')
+        ->where('options_cargo.cargo_request_id','=' , $requests->id)
+        ->get()->toArray();
+        
+        return $requests; 
     }
 
 

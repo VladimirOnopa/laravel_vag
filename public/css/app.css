@@ -1,0 +1,279 @@
+.cargo_trans_wrapper{
+	border: 1px solid black;
+}
+.cargo_trans_wrapper .form-group.row{
+	margin: 0;
+}
+.cargo_trans_wrapper input::-webkit-outer-spin-button,
+.cargo_trans_wrapper input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.cargo_trans_wrapper form .title_{
+	font-size: 13px;
+	font-weight: bold;
+}
+.cargo_trans_wrapper .d-flex-item{
+	display: flex;
+	align-items: center;
+}
+.cargo_trans_wrapper #date_from,
+.cargo_trans_wrapper #date_to{
+	margin: 0 10px;
+	width: 120px;
+}
+.cargo_trans_city_wrp{
+	position: relative;
+}
+.cargo_trans_city_wrp>label{
+	padding: 10px 0;
+}
+.cargo_trans_city_wrp>input{
+	width: 205px;
+}
+.cargo_trans_wrapper .d-flex{
+	margin: 10px 0;  
+    align-items: center;
+}
+.unload_block_top>.title_{
+	height: 35px;
+}
+.cargo_trans_wrapper .form-group.row.border_{
+	margin: 0;
+	padding: 10px;
+    border-bottom: 1px solid black;
+}
+.cargo_trans_wrapper .card-body{
+	padding: 0;
+}
+.show_price_toggle_block .title_,
+.show_add_info_toggle_block .title_{
+	margin: 0 10px 0 0;
+}
+.show_price_toggle_block a.collapsed:after,
+.show_add_info_toggle_block a.collapsed:after{
+	margin: 0 5px;
+	font-family: "Font Awesome 5 Free";
+	content: "\f078"; 
+	font-weight: 900;
+	right: 20px; 
+}
+.show_price_toggle_block a:after,
+.show_add_info_toggle_block a:after{
+	margin: 0 5px;
+	font-family: "Font Awesome 5 Free";
+	content: "\f077";
+	font-weight: 900;
+	right: 20px; 
+}
+.price_block_collapse{
+    border-bottom: 1px solid black;
+}
+.price_block_collapse .divider_symbol{
+	padding: 0 10px;
+}
+.price_block_collapse .price_amount_block .dropdown.bootstrap-select{
+	margin: 0 5px;
+}
+.cargo_trans_size_block label{
+	padding-left: 0;
+}
+.size_block label{
+	padding-left: 5px;
+}
+.cargo_trans_wrapper .btn.dropdown-toggle.btn-light{
+	border: 1px solid #ced4da; 
+}
+.cargo_trans_wrapper .dropdown.bootstrap-select{
+	padding: 0;
+}
+.cargo_trans_wrapper textarea {
+  resize: none;
+}
+.cargo_trans_wrapper #nds {
+  margin: 0 10px;
+}
+.cargo_trans_wrapper .notice_block label{
+  padding: 10px 0;
+}
+.cargo_trans_wrapper .add_info_wrapper{
+  border-top: 1px solid black;
+}
+.show_add_info_toggle_block>div{
+	padding: 0;
+}
+.cargo_trans_wrapper .additional_place.hide{
+	display: none!important;
+}
+.cargo_trans_wrapper .additional_place{
+	position: relative;
+}
+.cargo_trans_wrapper .additional_place a{
+	padding-left: 0;
+	text-decoration: none;
+}
+.show_price_block.hide{
+	color: gray;
+}
+.cargo_trans_wrapper .collapsing {
+    transition: 200ms;
+} 
+.user_info_block_wrapper .input_wrapper_block{
+	display: flex;
+	align-items: center;
+}
+.user_info_block_wrapper .input_wrapper_block>label{
+	display: flex;
+	align-items: center;
+}
+.user_info_block_wrapper .input_wrapper_block>label>input{
+	margin: 0 5px 0 0;
+}
+.user_info_block_wrapper .input_wrapper_block .title_{
+	margin: 0 5px 0 0;
+	width: 70px;
+}
+.add_extra_user_data_block>a{
+	margin: 0 0 0 90px;
+}
+.add_info_wrapper .items_add_info{
+	padding: 0;
+}
+.add_info_wrapper>.container-fluid>.row{
+    padding: 10px 5px;
+}
+.cargo_trans_wrapper .submit_block{
+	margin: 0 ;
+}
+.cargo_trans_wrapper .submit_block button{
+    margin: 10px auto 20px auto;
+    display: block;
+    width: 200px;
+}
+.cargo_trans_wrapper .list_locations{
+	position: absolute;
+	max-width: 400px;
+    width: 100%;
+    max-height: 200px;
+    list-style: none;
+    overflow: hidden;
+    padding: 0;
+    background: white;
+    z-index: 1;
+    top: 40px;
+    border: 1px solid;
+    overflow-y: auto;
+}
+.cargo_trans_wrapper .list_locations>li>span{
+	font-weight: bold;
+}
+.cargo_trans_wrapper .list_locations>li{
+	cursor: pointer;
+}
+.cargo_trans_wrapper .list_locations>li:hover{
+	background-color:  #3366cc;
+	color: white;
+}
+.item_request_cargo_trans {
+	margin: 5px 0;
+    padding: 5px;
+    border: 1px solid gray;
+    background: #fbfbfb;
+    min-height: 100px;
+    font-size: 14px;
+}
+.item_request_cargo_trans .actions_links{
+	display: flex;
+	align-items: flex-end;
+}
+.item_request_cargo_trans .actions_links>.dropdown>a{
+	padding: 0;
+}
+.item_request_cargo_trans .actions_links a{
+	background: transparent!important;
+	color: black!important;
+	border-color: transparent!important;
+}
+.item_request_cargo_trans .actions_links a:focus{
+	box-shadow: none!important;
+}
+.item_request_cargo_trans .datatime{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-left: 0;
+}
+.item_request_cargo_trans .datatime>div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.item_request_cargo_trans .datatime>div>.title{
+    color: gray;
+}
+.item_request_cargo_trans .options_block>.bold{
+    font-weight: bold;
+}
+.item_request_cargo_trans .options_block{
+    margin: 5px 0 0 0;
+    text-transform: lowercase;
+}
+.item_request_cargo_trans .waypoints{
+    display: flex;
+    justify-content: flex-start;
+}
+.item_request_cargo_trans .waypoints>div>:last-child{
+     font-weight: bold;
+}
+.item_request_cargo_trans .waypoints>span{
+    margin: 0 10px;
+}
+.item_request_cargo_trans .cargo_weight_size{
+    padding: 0 5px;
+}
+.item_request_cargo_trans .cargo_weight_size>div>span{
+    margin: 0 10px 0 0;
+    font-weight:bold;
+}
+.item_request_cargo_trans .info_block{
+   color: gray;
+}
+.item_request_cargo_trans .info_block>span{
+   margin: 0 10px 0 0;
+}
+.item_request_cargo_trans .dropdown-item{
+   padding: 0 5px;
+}
+.item_request_cargo_trans .dropdown-item input{
+  background: transparent;
+  border:none;
+  padding: 0;
+}
+.item_request_cargo_trans .main_info{
+ 	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.cargo.no_request{
+ 	font-size: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.cargo.no_request>img{
+ 	width: 200px;
+ 	margin: 20px 0 0 0;
+	opacity: .2;
+}
+.navbar.cargo_nav{
+	border: 1px solid #80808057;
+}
+.container.cargo{
+	border: 1px solid #80808057;
+    border-top: none;
+    padding: 5px;
+}
+.ui-tooltip{
+	font-size: 13px;
+}

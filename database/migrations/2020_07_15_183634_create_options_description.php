@@ -14,11 +14,12 @@ class CreateOptionsDescription extends Migration
     public function up()
     {
         Schema::create('options_description', function (Blueprint $table) {
-            $table->id();
+            $table->id()->index('id');
             $table->mediumText('name');
             $table->mediumText('type');
             $table->mediumText('group')->comment('Доки/Погрузка');
             $table->mediumText('type_variant')->comment('Груз\Транспорт');
+            $table->integer('order')->index('order');
         });
     }
 

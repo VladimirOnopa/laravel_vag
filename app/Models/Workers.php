@@ -33,7 +33,7 @@ class Workers extends Model
 
 
     /**
-     * [get all workers]
+     * Получить всех сотрудников компании
      * @param  [int] $company_id [company_id id]
      * @return [mixed]          [list workers]
      */

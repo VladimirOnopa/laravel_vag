@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\Workers;
+use Validator;
 use URL;
+use DB;
+use Session;
 
 
 
@@ -25,12 +28,10 @@ class CompanyController extends Controller
         $comp = new Company();
         $comp = $comp->getCompany($user->id);
 
-
         $data = [
             'comp'  => $comp,
             'user'   => $user 
         ];
-
 
         return view('my-company', compact('data'));
     }
@@ -78,12 +79,62 @@ class CompanyController extends Controller
         return response()->json(array('msg'=> $msg), 200);
     }
     /**
+     * Добавим доп телефоны, Viber , Skype , Whatsapp
+     */
+    public function add_contacts(Request $request)
+    {   
+        $user = auth()->user();
+       
+        if($request->has('tel_second')){
+
+            $value = strip_tags($request->input('tel_second'));
+            $validator = Validator::make($request->all(), ['tel_second' => 'required|numeric|min:9']);
+            if (!$validator->fails()) {
+                DB::table('users')->where('id', $user->id)->update(['tel_second' => $value]);
+                $msg = "Телефон добавлен!";
+            }
+
+        }elseif($request->has('viber')){
+
+            $value = strip_tags($request->input('viber'));
+            $validator = Validator::make($request->all(), ['viber' => 'required|min:9']);
+            if (!$validator->fails()) {
+                DB::table('users')->where('id', $user->id)->update(['viber' => $value]);
+                $msg = "Viber добавлен!";
+            }
+
+        }elseif($request->has('skype')){
+
+            $value = strip_tags($request->input('skype'));
+            $validator = Validator::make($request->all(), ['skype' => 'required|string|min:6']);
+            if (!$validator->fails()) {
+                DB::table('users')->where('id', $user->id)->update(['skype' => $value]);
+                $msg = "Skype добавлен!";
+            }
+
+        }elseif($request->has('whatsapp')){
+
+            $value = strip_tags($request->input('whatsapp'));
+            $validator = Validator::make($request->all(), ['whatsapp' => 'required|min:9']);
+            if (!$validator->fails()) {
+               DB::table('users')->where('id', $user->id)->update(['whatsapp' => $value]);
+               $msg = "Whatsapp добавлен!";
+            }
+
+        }
+        if (!$validator->fails()) {
+            return redirect()->back()->with('message_add_info_user', $msg);  
+        }else{
+            return redirect()->back()->withErrors($validator->errors()); 
+        }
+        
+    }
+    /**
      * Подтверждение приглашения
      */
     public function acceptInvite()
     {
    
-
         $request->validate([
             'email' => 'required|email',
         ]);
@@ -99,7 +150,6 @@ class CompanyController extends Controller
             $comp->InviteByEmail( $request->input('email') , $company_id['id'] , Str::random(30));
             $msg = "Приглашение отправленно!";
         }
-
     	
         return response()->json(array('msg'=> $msg), 200);
     }
